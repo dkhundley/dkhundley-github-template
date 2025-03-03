@@ -6,7 +6,6 @@ uv python install 3.12
 
 echo 'Initializing uv project...'
 echo "3.12" > .python-version
-python dependencies/convert_requirements.py
 
 echo 'Creating a uv venv virtual environment with Python 3.12...'
 uv venv --python=3.12 .venv
@@ -15,7 +14,11 @@ echo 'Activating the venv virtual environment...'
 source .venv/bin/activate
 
 echo 'Installing Python dependencies with uv...'
-uv sync
+while IFS= read -r line || [[ -n "$line" ]]; do
+    if [[ -n "$line" && ! "$line" =~ ^[[:space:]]*# ]]; then
+        uv add "$line"
+    fi
+done < "dependencies/requirements.txt"
 
 echo 'Creating a Jupyter notebook kernel using the uv venv...'
 python -m ipykernel install --user --name 'dkhundley_venv' --display-name 'dkhundley_venv'
