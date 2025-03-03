@@ -6,7 +6,7 @@ uv python install 3.12
 
 echo 'Initializing uv project...'
 echo "3.12" > .python-version
-python convert_requirements.py
+python dependencies/convert_requirements.py
 
 echo 'Creating a uv venv virtual environment with Python 3.12...'
 uv venv --python=3.12 .venv
